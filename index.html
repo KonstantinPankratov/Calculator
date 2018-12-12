@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+</head>
+<body>
+	<div id="calculator">
+
+		<h1>Mortgage Calculator</h1>
+
+		<div class="sliders clearfix">
+			<div class="slider-wrapper">
+				<h2>Credit Amount</h2>
+				<div class="slider" id="amount" min="100000" max="500000" prefix="$" postfix="" step="10000">
+					<div class="slider-range"></div>
+					<div class="slider-value"></div>
+				</div>
+			</div>
+			<div class="slider-wrapper">
+				<h2>Loan terms</h2>
+				<div class="slider" id="terms" min="1" max="10" prefix="" postfix=" years" step="1">
+					<div class="slider-range"></div>
+					<div class="slider-value"></div>
+				</div>
+			</div>
+			<div class="slider-wrapper">
+				<h2>Interest rate</h2>
+				<div class="slider" id="rate" min="2" max="15" prefix="" postfix=" % / year" step="1">
+					<div class="slider-range"></div>
+					<div class="slider-value"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="total-payout">
+			<h4>Total payout</h4>
+			<div id="payout"></div>
+		</div>
+
+	</div>
+	<script src="assets/js/scripts.js"></script>
+</body>
+</html>
