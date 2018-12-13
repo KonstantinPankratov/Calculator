@@ -13,6 +13,11 @@ var slider,
 	slider_range,
 	slider_value;
 
+var start = (('ontouchstart' in window) || (window.DocumentTouch && document instanceof DocumentTouch)) ? 'touchstart' : 'mousedown',
+	end   = (('ontouchend' in window) || (window.DocumentTouch && document instanceof DocumentTouch)) ? 'touchend' : 'mouseup',
+	move  = (('ontouchmove' in window) || (window.DocumentTouch && document instanceof DocumentTouch)) ? 'touchmove' : 'mousemove';
+
+
 function initialize () {
 
 		slider       = document.getElementsByClassName('slider'),
@@ -70,8 +75,7 @@ function run () {
 			button_width   = button[i].offsetWidth,
 			right_boundary = range_width - button_width;
 
-
-			button[i].addEventListener('mousedown', function(e) {
+			button[i].addEventListener(start, function(e) {
 				dragging  = true,
 				draggable = this;
 
@@ -84,21 +88,20 @@ function run () {
 				min			 = parseInt(slider.getAttribute('min')),
 				step		 = parseInt(slider.getAttribute('step'));
 
-				button_offset = e.clientX - draggable.offsetLeft;
+				button_offset = move_coordinates(e, true) - draggable.offsetLeft;
+
 			});
 
-			window.addEventListener('mouseup', function(e) {
+			window.addEventListener(end, function(e) {
 				dragging  = false,
 				draggable = null;
 			});
 
-			window.addEventListener('mousemove', function(e) {
+			window.addEventListener(move, function(e) {
 
 				if (dragging) {
 
-					e.preventDefault();
-
-					var range = e.clientX - range_left - button_offset + button_width;
+					var range = move_coordinates(e) - range_left - button_offset + button_width;
 
 					if (range < 0) {
 						range = 0;
@@ -106,9 +109,9 @@ function run () {
 						range = right_boundary;
 					}
 
-					var percent = (max - min) / 540,
+					var percent = (max - min) / right_boundary,
 						value   = (percent * range) + min,
-						value = Math.round(value / step) * step;
+						value   = Math.round(value / step) * step;
  
 					var slider_path_range = range + button_width / 2;
 
@@ -125,6 +128,17 @@ function run () {
 			});
 	}
 
+}
+
+function move_coordinates (e, prevent_defaults) {
+	if (e.clientX) {
+
+		if (prevent_defaults) e.preventDefault();
+		
+		return e.clientX;
+	} else {
+		return e.touches[0].pageX;
+	}
 }
 
 function calculate () {
